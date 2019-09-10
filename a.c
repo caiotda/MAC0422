@@ -9,7 +9,7 @@ int MAXLINE = 1024;
 char prompt[] = ">> ";
 
 // -r-xr-xr-x
-
+/* TODO : limpar a variavel de comando e path*/
 int main (int argc, char **argv) {
 	char* cmdline = malloc(sizeof(char) * MAXLINE);
 	char path[256];
@@ -19,6 +19,7 @@ int main (int argc, char **argv) {
 	FILE* fd;
 
 	while(1) {
+
 		printf("%s", prompt);
 
 		cmdline = fgets(cmdline, MAXLINE, stdin);
@@ -51,6 +52,7 @@ int main (int argc, char **argv) {
 			}
 			else { /* nao eh o papai */
 				chmod(path, 0000);
+				exit(0);
 			}
 		}
 		else if (strcmp(command, "liberageral") == 0) {
@@ -59,10 +61,17 @@ int main (int argc, char **argv) {
 			}
 			else { /* nao eh o papai */
 				chmod(path, 0777);
+				printf("Pinto\n");
 			}
 		}
 		else if (strcmp(command, "rodeveja") == 0) {
-			printf("olha para meu popozao");
+			if (fork() != 0) { /* papai */
+				waitpid(-1, &status, 0);
+			}
+			else { /* nao eh o papai */
+				execve(path, argv, 0); /* mudar o argv*/
+				exit(0);
+			}
 		}
 		else if (strcmp(command, "rode") == 0) {
 			printf("a bolsinha");
