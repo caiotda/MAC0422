@@ -69,7 +69,7 @@ int main (int argc, char **argv) {
 				waitpid(-1, &status, 0);
 			}
 			else { /* nao eh o papai */
-				execve(path, argv, 0); /* mudar o argv*/
+				execve(path, argv, 0); /*mudar o argv*/
 				exit(0);
 			}
 		}
