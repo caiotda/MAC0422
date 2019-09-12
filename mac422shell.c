@@ -14,6 +14,7 @@ int main (int argc, char **argv) {
 	char* cmdline = malloc(sizeof(char) * MAXLINE);
 	char path[256];
 	char command[64];
+	char* args[] = {".", "-l", "-h", "-a", NULL};
 	int i, j, has_found_space, status;
 	char* default_commands[4];
 	FILE* fd;
@@ -69,7 +70,8 @@ int main (int argc, char **argv) {
 				waitpid(-1, &status, 0);
 			}
 			else { /* nao eh o papai */
-				execve(path, argv, 0); /*mudar o argv*/
+				args[0] = path;
+				execve(args[0], args, 0); /*mudar o argv*/
 				exit(0);
 			}
 		}
