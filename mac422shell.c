@@ -8,84 +8,95 @@
 int MAXLINE = 1024;
 char prompt[] = ">> ";
 
-// -r-xr-xr-x
+char **get_input(char *input) {
+    char **command = malloc(16 * sizeof(char *));
+    char *separator = " ";
+    char *parsed;
+    int index = 0;
+
+    parsed = strtok(input, separator);
+    while (parsed != NULL) {
+        command[index] = parsed;
+        index++;
+
+        parsed = strtok(NULL, separator);
+    }
+
+    command[index] = NULL;
+    return command;
+}
+
 /* TODO : limpar a variavel de comando e path*/
 int main (int argc, char **argv) {
 	char* cmdline = malloc(sizeof(char) * MAXLINE);
-	char path[256];
-	char command[64];
-	char* args[] = {".", "-l", "-h", "-a", NULL};
-	int i, j, has_found_space, status;
-	char* default_commands[4];
-	FILE* fd;
+	char** args = malloc(sizeof(char *) * 8);
+	char** cmd;
+	int i, status, exec_stat;
 
+// rodeveja /bin/ls
 	while(1) {
 
-		printf("%s", prompt);
+		printf("%s", prompt);		
 
 		cmdline = fgets(cmdline, MAXLINE, stdin);
-		for (i = 0, has_found_space = 0, j = 0; cmdline[i] != '\n'; i++) {
-			if (cmdline[i] == ' ') {
-				command[i] = '\0';
-				has_found_space = 1;
-				i++;
-			}
-			if (!has_found_space)
-				command[i] = cmdline[i];
-			else {
-				path[j] = cmdline[i];
-				j++;
-			}
+		if(strlen(cmdline) == 1) {
+			continue;
+		}
+		cmdline = strtok(cmdline, "\n");
+		cmd = get_input(cmdline);
+
+		for(i = 0; cmd[i] != NULL; i++) {
+			args[i] = cmd[i+1];
 		}
 
-		path[j] = '\0';
-		printf("Seu comando foi %s\n", command);
-		printf("E o caminho dado foi %s\n", path);
-
-		if(strcmp(cmdline, "end\n") == 0) {
-			printf("acabou! \n");
-			exit(0);
+		for(i = 0; args[i] != NULL; i++) {
+			printf("args[%d] : %s\n", i, args[i]);
 		}
 
-		if (strcmp(command, "protegepracaramba") == 0) {
-			if (fork() != 0) { /* papai */
+		// printf("Seu comando foi %s\n", cmd[0]);
+		// printf("E o caminho dado foi %s\n", args[0]);
+
+		if (strcmp(cmd[0], "protegepracaramba") == 0) {
+			if (fork() != 0) { /* Processo pai */
 				waitpid(-1, &status, 0);
 			}
-			else { /* nao eh o papai */
-				chmod(path, 0000);
+			else { /* Processo filho */
+				chmod(args[0], 0000);
 				exit(0);
 			}
 		}
-		else if (strcmp(command, "liberageral") == 0) {
-			if (fork() != 0) { /* papai */
+		else if (strcmp(cmd[0], "liberageral") == 0) {
+			if (fork() != 0) { /* Processo pai */
 				waitpid(-1, &status, 0);
 			}
-			else { /* nao eh o papai */
-				chmod(path, 0777);
-				printf("Pinto\n");
+			else { /* Processo filho */
+				chmod(args[0], 0777);
 			}
 		}
-		else if (strcmp(command, "rodeveja") == 0) {
-			if (fork() != 0) { /* papai */
+		else if (strcmp(cmd[0], "rodeveja") == 0) {
+			if (fork() != 0) { /* Processo pai */
 				waitpid(-1, &status, 0);
+				printf("Programa %s retornou código %d\n", args[0], status);
 			}
-			else { /* nao eh o papai */
-				args[0] = path;
-				execve(args[0], args, 0); /*mudar o argv*/
-				exit(0);
+			else { /* Processo filho */
+				exec_stat = execve(args[0], args, 0);
+				exit(exec_stat); 
 			}
 		}
-		else if (strcmp(command, "rode") == 0) {
-			printf("a bolsinha");
+		else if (strcmp(cmd[0], "rode") == 0) {
+			if (fork() == 0) {
+				 /* Processo filho */
+				exec_stat = execve(args[0], args, 0);
+				exit(exec_stat); 
+			}
 		}
 		else {
-			printf("digita algo certo seu burro");
+			printf("Comando não reconhecido \n");
 		}
 
 
 		if((cmdline == NULL) && ferror(stdin))
-			printf("Erro no fgets");
-
+			printf("Erro no fgets \n");
 	}
 
 	return 0;
