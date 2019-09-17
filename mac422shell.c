@@ -77,16 +77,14 @@ int main (int argc, char **argv) {
 		}
 		else if (strcmp(cmd[0], "rode") == 0) {
 			if (fork() != 0) {
-				signal(SIGCHLD, SIG_IGN);
+				continue;
 			}
 			else {
 				/* Processo filho */
-				close(STDERR_FILENO);
+				// close(STDERR_FILENO);
 				close(STDIN_FILENO);
-				close(STDOUT_FILENO);
-				fd = open("/dev/null", O_RDWR);
-				dup(fd);
-				dup(fd);
+				// close(STDOUT_FILENO);
+
 				exec_stat = execve(args[0], args, 0);
 				exit(exec_stat); 
 			}
