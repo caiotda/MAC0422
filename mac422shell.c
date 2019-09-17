@@ -26,16 +26,13 @@ char **get_input(char *input) {
     return command;
 }
 
-/* TODO : limpar a variavel de comando e path*/
 int main (int argc, char **argv) {
 	char* cmdline = malloc(sizeof(char) * MAXLINE);
 	char** args = malloc(sizeof(char *) * 8);
 	char** cmd;
 	int i, status, exec_stat;
 
-// rodeveja /bin/ls
 	while(1) {
-
 		printf("%s", prompt);		
 
 		cmdline = fgets(cmdline, MAXLINE, stdin);
@@ -48,13 +45,6 @@ int main (int argc, char **argv) {
 		for(i = 0; cmd[i] != NULL; i++) {
 			args[i] = cmd[i+1];
 		}
-
-		for(i = 0; args[i] != NULL; i++) {
-			printf("args[%d] : %s\n", i, args[i]);
-		}
-
-		// printf("Seu comando foi %s\n", cmd[0]);
-		// printf("E o caminho dado foi %s\n", args[0]);
 
 		if (strcmp(cmd[0], "protegepracaramba") == 0) {
 			if (fork() != 0) { /* Processo pai */
@@ -84,21 +74,22 @@ int main (int argc, char **argv) {
 			}
 		}
 		else if (strcmp(cmd[0], "rode") == 0) {
-			if (fork() == 0) {
-				 /* Processo filho */
+			if (fork() == 0) { /* Processo filho */
 				exec_stat = execve(args[0], args, 0);
 				exit(exec_stat); 
 			}
+			else { /* Processo pai */
+				signal(SIGCHLD, SIG_IGN);
+			}
 		}
 		else {
-			printf("Comando não reconhecido \n");
+			printf("Comando não reconhecido\n");
 		}
 
 
 		if((cmdline == NULL) && ferror(stdin))
-			printf("Erro no fgets \n");
+			printf("Erro no fgets\n");
 	}
 
 	return 0;
 }
-
