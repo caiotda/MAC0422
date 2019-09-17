@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <signal.h>
 
 int MAXLINE = 1024;
 char prompt[] = ">> ";
@@ -30,7 +32,7 @@ int main (int argc, char **argv) {
 	char* cmdline = malloc(sizeof(char) * MAXLINE);
 	char** args = malloc(sizeof(char *) * 8);
 	char** cmd;
-	int i, status, exec_stat;
+	int i, status, exec_stat, fd;
 
 	while(1) {
 		printf("%s", prompt);		
@@ -74,14 +76,22 @@ int main (int argc, char **argv) {
 			}
 		}
 		else if (strcmp(cmd[0], "rode") == 0) {
-			if (fork() == 0) { /* Processo filho */
+			if (fork() != 0) {
+				signal(SIGCHLD, SIG_IGN);
+			}
+			else {
+				/* Processo filho */
+				close(STDERR_FILENO);
+				close(STDIN_FILENO);
+				close(STDOUT_FILENO);
+				fd = open("/dev/null", O_RDWR);
+				dup(fd);
+				dup(fd);
 				exec_stat = execve(args[0], args, 0);
 				exit(exec_stat); 
 			}
-			else { /* Processo pai */
-				signal(SIGCHLD, SIG_IGN);
-			}
 		}
+
 		else {
 			printf("Comando não reconhecido\n");
 		}
