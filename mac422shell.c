@@ -33,6 +33,7 @@ int main (int argc, char **argv) {
 	char** args = malloc(sizeof(char *) * 8);
 	char** cmd;
 	int i, status, exec_stat, fd;
+	pid_t pid;
 
 	while(1) {
 		printf("%s", prompt);		
@@ -49,8 +50,9 @@ int main (int argc, char **argv) {
 		}
 
 		if (strcmp(cmd[0], "protegepracaramba") == 0) {
-			if (fork() != 0) { /* Processo pai */
-				waitpid(-1, &status, 0);
+			pid = fork();
+			if (pid != 0) { /* Processo pai */
+				waitpid(pid, &status, 0);
 			}
 			else { /* Processo filho */
 				chmod(args[0], 0000);
@@ -58,16 +60,18 @@ int main (int argc, char **argv) {
 			}
 		}
 		else if (strcmp(cmd[0], "liberageral") == 0) {
-			if (fork() != 0) { /* Processo pai */
-				waitpid(-1, &status, 0);
+			pid = fork();
+			if (pid != 0) { /* Processo pai */
+				waitpid(pid, &status, 0);
 			}
 			else { /* Processo filho */
 				chmod(args[0], 0777);
 			}
 		}
 		else if (strcmp(cmd[0], "rodeveja") == 0) {
-			if (fork() != 0) { /* Processo pai */
-				waitpid(-1, &status, 0);
+			pid = fork();
+			if (pid != 0) { /* Processo pai */
+				waitpid(pid, &status, 0);
 				printf("Programa %s retornou código %d\n", args[0], status);
 			}
 			else { /* Processo filho */
@@ -76,28 +80,28 @@ int main (int argc, char **argv) {
 			}
 		}
 		else if (strcmp(cmd[0], "rode") == 0) {
-			if (fork() != 0) {
+			pid = fork();
+			if (pid != 0) {
 				continue;
 			}
 			else {
 				/* Processo filho */
-				// close(STDERR_FILENO);
 				close(STDIN_FILENO);
-				// close(STDOUT_FILENO);
-
 				exec_stat = execve(args[0], args, 0);
 				exit(exec_stat); 
 			}
 		}
-
 		else {
 			printf("Comando não reconhecido\n");
 		}
 
-
 		if((cmdline == NULL) && ferror(stdin))
 			printf("Erro no fgets\n");
 	}
+
+	free(cmd);
+	free(args);
+	free(cmdline);
 
 	return 0;
 }
