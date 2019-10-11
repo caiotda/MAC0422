@@ -1,0 +1,52 @@
+vai tomar no cu alan
+
+
+- Acresente uma nova fila ao escalonador (BATCH_Q)
+    - Colocada entre fila IDLE e processos de usuario
+    - Essa fila deverá operar em sistema de batch.
+- Implemente novas CHAMADAS DE SISTEMA:
+    - batch(PID) : coloca processo PID em BATCH_Q.
+    - unbatch(PID) : tira o processo PID em BATCH_Q.
+    * ambos só podem ser chamados do processo pai.
+
+- Como funciona o BATCH_Q?
+    - Nenhum processo em BATCH_Q pode mudar de fila.
+    - Um processo *novo* nessa fila deve rodar até que 
+    o total de tiques(?) seja o mesmo do processo com 
+    menor númer de tiques na fila.
+    - Quando todos os processos tiverem o mesmo numero de tiques, opere em round robin.
+    - Processos nessa fila só rodam quando a maquina estiver
+    ociosa
+
+
+DICA VALIOSÍSSIMA SEI ESCREVER ESSA PALAVRA CARALHO
+QUERO TRANCAR SO : 
+    - Ao implementar uma nova chamada de sistema, precisamos
+    criar uma nova rotina na biblioteca de sistemas. Essa rotina
+    transformará nossa chamada de sistemas em uma mensagem para o process manager
+
+
+---------------------------------------------------
+
+
+"Adicione uma nova fila ao escalonador" 
+
+    - Isso basicamente quer dizer que devemos aumentar a prioridade minima (que atualmente é 15 no minix). Essa prioridade nova deve ser entre 15 e 7, ou seja, [15,7).
+
+"Adicione uma chamada de sistema batch(PID)"
+    - Seria analogo ao Enqueue, mas pra essa fila em especifico! É só questão de inserir na lista
+
+"Adicione uma chamada de sistema unbatch(PID)"
+    -Analogo ao deque, mas pra essa fila em específico.
+
+-----------------------------------
+
+
+Duvidas 
+
+
+- Aonde modifico o tamanho do rdy_head e rdy_tail? Ou seja, como expandir o número de prioridades aceitadas?
+    ** LINHA 83 DO PROC.H **
+
+
+- 
