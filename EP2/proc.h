@@ -80,12 +80,17 @@ struct proc {
  * can be set in table.c. IDLE must have a queue for itself, to prevent low 
  * priority user processes to run round-robin with IDLE. 
  */
-#define NR_SCHED_QUEUES   16	/* MUST equal minimum priority + 1 */
+/* ####################################################################### */
+
+#define NR_SCHED_QUEUES   17	/* MUST equal minimum priority + 1 */ /* EP : Aumenta numero de tarefas em 1 */
+#define BATCH_Q         15 /* Prioridade do BATCH, deve ser menor que IDLE */
+#define IDLE_Q		  16    /* lowest, only IDLE process goes here */ /*EP : Diminui em 1 a prioridade do IDLE para encaixar BATCH_Q */
+
+/*########################################### */
 #define TASK_Q		   0	/* highest, used for kernel tasks */
 #define MAX_USER_Q  	   0    /* highest priority for user processes */   
 #define USER_Q  	   7    /* default (should correspond to nice 0) */   
 #define MIN_USER_Q	  14	/* minimum priority for user processes */
-#define IDLE_Q		  15    /* lowest, only IDLE process goes here */
 
 /* Magic process table addresses. */
 #define BEG_PROC_ADDR (&proc[0])
