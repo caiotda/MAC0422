@@ -42,11 +42,38 @@ QUERO TRANCAR SO :
 -----------------------------------
 
 
+
+Fase 2 :
+
+PASSOS : 
+    - Criar a chamada de sistema
+        - Crio um id de chamada de sistema em /usr/servers/pm/proto.h
+             - PRocuro um id que não é usado e coloco ali o nome do meu  syscall handler
+        - Defino o prototipo do handler em /usr/servers/pm/misc.c
+        - Para chamar o handler basta fazer
+
+            message m;
+            _syscall(PS, ID, &m);
+
+            Sendo ID o id definido da syscall no proto.h;
+
+            Pra passar parametros pro syscall, temos que incluir lib.h e fazer
+
+            m.m1_i1 = bla;
+            m.m1_i2 = ble;
+            .
+            .
+            .
+            _syscall(PS, IDm &m);
+        
+        - Criando uma Função de user library.
+            - Crie um #define para mapear o numero da chamada de sistema para a função de handler. Faça isso no arquivo /usr/src/include/minix/callnr.h e /usr/include/minix/callnr.h
+                #define BATCH ID
+                
+            - cria-se um arquivo chamado _batch.c, e coloque em /usr/src/lib/posix
+            -
+    - Setar a prioridade de processos que entram pra ser igual a 15.
 Duvidas 
-
-
-- Aonde modifico o tamanho do rdy_head e rdy_tail? Ou seja, como expandir o número de prioridades aceitadas?
-    ** LINHA 83 DO PROC.H **
 
 
 - 
