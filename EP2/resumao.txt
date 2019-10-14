@@ -75,5 +75,13 @@ PASSOS :
     - Setar a prioridade de processos que entram pra ser igual a 15.
 Duvidas 
 
+- REALIZANDO O ESCALONAMENTO DE FATO
+    - Preciso pegar o ID do processo filho, e de alguma forma transformar isso num
+     ponteiro pro running process...
 
+    - Ok, aprendi a pegar o PID na chamada ao batch e passar pra syscall do_batch. dai eu posso fazer o proc_from_pid, e eu posso acessar a tabela de processos fazendo
+
+    proc_num = proc_from_pid(PID)
+    rp = &mproc[proc_num]
+    
 - 
