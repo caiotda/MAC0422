@@ -1,8 +1,6 @@
 #include "syslib.h"
 
-int sys_batchenqueue(int proc)
+int sys_batchenqueue(message *msgptr)
 {
-        message m;
-
-        return(_taskcall(SYSTASK, SYS_BATCHENQUEUE, &m));
+        return(_taskcall(SYSTASK, SYS_BATCHENQUEUE, msgptr));
 }

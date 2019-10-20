@@ -28,15 +28,16 @@
 /* ######################################################## */
 int do_batch()
 {
-      // int PID, proc_num;
-      // struct mproc* pr;
-      // PID = m_in.m1_i1;
-      // printf("Mensagem recebida no batch! O PID passado foi %d\n", PID);
-      // proc_num = proc_from_pid(PID); /*Pega o indice do processo dentro da tabela de processos*/
-      // pr = &mproc[proc_num]; /*Pega o processo de fato*/
-      // pr->p_priority = BATCH_Q;
-      // enqueue(pr);
-      printf("Bath syscall called\n");
+      int PID, proc_num;
+      struct mproc* rp;
+      message mker;
+
+      PID = m_in.m1_i1;
+      proc_num = proc_from_pid(PID); /*Pega o indice do processo dentro da tabela de processos*/
+      rp = &mproc[proc_num]; /*Pega o processo de fato*/
+      mker.m1_i1 = rp;
+
+      sys_batchenqueue(&mker);
 	    return (OK);
 }
 
