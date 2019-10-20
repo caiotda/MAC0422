@@ -1,8 +1,8 @@
 #include "syslib.h"
 
-int sys_batchenqueue(unsigned flags, endpoint_t proc_ep)
+int sys_batchenqueue(int proc)
 {
         message m;
 
-        return(_kernel_call(SYS_BATCHENQUEUE, &m));
+        return(_taskcall(SYSTASK, SYS_BATCHENQUEUE, &m));
 }
