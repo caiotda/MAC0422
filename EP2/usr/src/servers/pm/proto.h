@@ -8,8 +8,8 @@ struct memory;
 #include <timers.h>
 
 /*######################################################################*/
-_PROTOTYPE( int do_batch, (int)            );
-_PROTOTYPE( int do_unbatch, (int)            );
+_PROTOTYPE( int do_batch, (void)            );
+_PROTOTYPE( int do_unbatch, (void)            );
 /*######################################################################*/
 
 /* alloc.c */
