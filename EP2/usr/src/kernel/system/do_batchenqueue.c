@@ -14,9 +14,8 @@ int do_batchenqueue(message *m_ptr)
     rp = proc_addr(proc_num);
     lock_dequeue(rp);
     rp->p_max_priority = rp->p_priority = BATCH_Q;
-    if (! rp->p_rts_flags) lock_enqueue(rp);
+    lock_enqueue(rp);
 
-    kprintf("Teste da batchenqueue funcinou");
     return(OK);
 }
 /*###########################################################################*/
