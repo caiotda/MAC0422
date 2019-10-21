@@ -28,18 +28,18 @@
 /* ######################################################## */
 int do_batch()
 {
-      int PID, proc_num;
-      struct mproc* rp;
-      message mker;
+            int PID, proc_num;
+            struct mproc* rp;
+            message mker;
 
-      PID = m_in.m1_i1;
-      proc_num = proc_from_pid(PID); /*Pega o indice do processo dentro da tabela de processos*/
-      rp = &mproc[proc_num]; /*Pega o processo de fato*/
-      mker.m1_i1 = rp;
-
-      sys_batchenqueue(&mker);
-	    return (OK);
+            PID = m_in.m1_i1;
+            proc_num = proc_from_pid(PID);/* Pega o indice do processo dentro da tabela de processos*/
+            mker.m1_i1 = proc_num;
+            
+            sys_batchenqueue(&mker);
+            return (OK);
 }
+
 
 
 int do_unbatch()
