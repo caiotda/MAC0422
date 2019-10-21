@@ -617,7 +617,7 @@ int *front;					/* return: front or back */
   if (! time_left && rp->p_priority != BATCH_Q) {                               /* quantum consumed ? */
   /*######################################################################*/
       rp->p_ticks_left = rp->p_quantum_size; 	/* give new quantum */
-      if (rp->p_priority < (IDLE_Q-1)) {  	 
+      if (rp->p_priority < (BATCH_Q-1)) {  	 /* impede que processos entrem na batch_q*/
           rp->p_priority += 1;			/* lower priority */
       }
   }
