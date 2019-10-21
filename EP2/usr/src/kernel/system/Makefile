@@ -47,7 +47,8 @@ OBJECTS	= \
 	$(SYSTEM)(do_iopenable.o) \
 	$(SYSTEM)(do_vm.o) \
 	$(SYSTEM)(do_vm_setbuf.o) \
-	$(SYSTEM)(do_batchenqueue.o)
+	$(SYSTEM)(do_batchenqueue.o) \
+	$(SYSTEM)(do_batchdequeue.o)
 
 $(SYSTEM):	$(OBJECTS)
 	aal cr $@ *.o
@@ -148,6 +149,9 @@ $(SYSTEM)(do_iopenable.o):	do_iopenable.c
 
 $(SYSTEM)(do_batchenqueue.o): do_batchenqueue.c
 	$(CC) do_batchenqueue.c
+
+$(SYSTEM)(do_batchdequeue.o): do_batchdequeue.c
+	$(CC) do_batchdequeue.c
 
 $(SYSTEM)(do_vm.o):	do_vm.o
 do_vm.o:	do_vm.c

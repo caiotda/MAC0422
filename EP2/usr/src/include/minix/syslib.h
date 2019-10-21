@@ -175,6 +175,7 @@ _PROTOTYPE( char *pci_slot_name, (int devind)				);
 /*###########################################################################*/
 /* Custom kernel calls */
 _PROTOTYPE( int sys_batchenqueue, (message *msgptr) );
+_PROTOTYPE( int sys_batchdequeue, (message *msgptr) );
 /*###########################################################################*/
 
 #endif /* _SYSLIB_H */

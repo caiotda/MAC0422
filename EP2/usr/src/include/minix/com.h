@@ -281,8 +281,9 @@
 
 /*###########################################################################*/
 #  define SYS_BATCHENQUEUE (KERNEL_CALL + 31) /* sys_batchenqueue() */
+#  define SYS_BATCHDEQUEUE (KERNEL_CALL + 32) /* sys_batchdequeue() */
 
-#define NR_SYS_CALLS	32	/* number of system calls */ 
+#define NR_SYS_CALLS	33	/* number of system calls */ 
 /*###########################################################################*/
 
 /* Subfunctions for SYS_PRIVCTL */

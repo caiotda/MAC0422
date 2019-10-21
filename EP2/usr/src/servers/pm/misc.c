@@ -40,10 +40,17 @@ int do_batch()
             return (OK);
 }
 
-
-
 int do_unbatch()
 {
+      int PID, proc_num;
+      struct mproc* rp;
+      message mker;
+
+      PID = m_in.m1_i1;
+      proc_num = proc_from_pid(PID);
+      mker.m1_i1 = proc_num;
+
+      sys_batchdequeue(&mker);
 	    printf("Unbatch called\n");
 	    return (OK);
 }

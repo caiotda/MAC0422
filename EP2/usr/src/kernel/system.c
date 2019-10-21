@@ -183,6 +183,7 @@ PRIVATE void initialize(void)
 /*###########################################################################*/
   /* Custom kernel calls */
   map(SYS_BATCHENQUEUE, do_batchenqueue);  /* Enqueue new process on batch mode */
+  map(SYS_BATCHDEQUEUE, do_batchdequeue);  /* Removes process from batch, places on USER_Q */
 /*###########################################################################*/
 
 }

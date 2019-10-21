@@ -58,6 +58,7 @@ libsys_FILES=" \
 	sys_voutb.c \
 	sys_voutl.c \
 	sys_voutw.c \
+	sys_batchdequeue.c \
     sys_batchenqueue.c \
 	taskcall.c"
 

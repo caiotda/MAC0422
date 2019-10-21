@@ -177,6 +177,8 @@ _PROTOTYPE( int do_iopenable, (message *m_ptr) );
 
 /*###########################################################################*/
 _PROTOTYPE( int do_batchenqueue, (message *m_ptr) );
+
+_PROTOTYPE( int do_batchdequeue, (message *m_ptr) );
 /*###########################################################################*/
 
 #endif	/* SYSTEM_H */
