@@ -28,31 +28,52 @@
 /* ######################################################## */
 int do_batch()
 {
-            int PID, proc_num;
-            struct mproc* rp;
-            message mker;
+    int PID, called_proc_num, caller_pid, caller_proc_num;
+    message mker;
+	struct mproc* caller_process;
+    struct mproc* aux;
 
-            PID = m_in.m1_i1;
-            proc_num = proc_from_pid(PID);/* Pega o indice do processo dentro da tabela de processos*/
-            mker.m1_i1 = proc_num;
-            
-            sys_batchenqueue(&mker);
-            return (OK);
+    PID = m_in.m1_i1;
+    called_proc_num = proc_from_pid(PID);/* Pega o indice do processo dentro da tabela de processos*/
+    mker.m1_i1 = called_proc_num;
+
+	caller_pid = getpid();
+	caller_proc_num = proc_from_pid(caller_pid);
+
+    aux = &mproc[called_proc_num];
+    caller_process = &mproc[aux->mp_parent];
+
+	if (caller_process->mp_pid != caller_proc_num) {
+		return -1; /* Nao foi o pai que chamou o batch para o filho */
+	}
+
+    sys_batchenqueue(&mker);
+    return (OK);
 }
 
 int do_unbatch()
 {
-      int PID, proc_num;
-      struct mproc* rp;
-      message mker;
+    int PID, called_proc_num, caller_pid, caller_proc_num;
+    message mker;
+	struct mproc* caller_process;
+    struct mproc* aux;
 
-      PID = m_in.m1_i1;
-      proc_num = proc_from_pid(PID);
-      mker.m1_i1 = proc_num;
+    PID = m_in.m1_i1;
+    called_proc_num = proc_from_pid(PID);/* Pega o indice do processo dentro da tabela de processos*/
+    mker.m1_i1 = called_proc_num;
 
-      sys_batchdequeue(&mker);
-	    printf("Unbatch called\n");
-	    return (OK);
+	caller_pid = getpid();
+	caller_proc_num = proc_from_pid(caller_pid);
+
+    aux = &mproc[called_proc_num];
+    caller_process = &mproc[aux->mp_parent];
+
+	if (caller_process->mp_pid != caller_proc_num) {
+		return -1; /* Nao foi o pai que chamou o batch para o filho */
+	}
+
+    sys_batchdequeue(&mker);
+    return (OK);
 }
 /* ######################################################## */
 
