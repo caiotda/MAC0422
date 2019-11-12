@@ -60,3 +60,7 @@
 * Se tudo estiver ok, o processo retorna com sucesso.
 * Importante ressaltar que fixamos que o processo colocado ou removido da BATCH deverá ser filho do processo que fez a chamada
   * Fizemos isso comparando o PID do processo rodando do_batch e do_unbatch com o PID do processo pai do PID recebido por parametro.
+
+### Testando
+
+	* Para testar as rotinas de batch e unbatch, criamos um arquivo "Loop" (armazenado em /usr/src) que cria um loop infinito. Fazemos um batch com esse processo, e observamos que ele vai para a fila 15. Posteriormente, rodamos um unbatch no processo e ele volta para a fila 14. 
