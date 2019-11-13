@@ -1,14 +1,42 @@
-#include "../../servers/inc.h" /* import do server : check */
+#define _MINIX 1
+#define _POSIX_SOURCE 1
+
+#include <stdio.h>
+#include <pwd.h>
+#include <curses.h>
 #include <timers.h>
-#include <ibm/interrupt.h>
-#include <minix/endpoint.h>
-#include "../../kernel/const.h" /* imports do kernel : check */
-#include "../../kernel/config.h"
-#include "../../kernel/debug.h"
-#include "../../kernel/type.h"
-#include "../../kernel/proc.h"
-#include "../../kernel/ipc.h"
-#include "../../servers/pm/mproc.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <termcap.h>
+#include <termios.h>
+#include <time.h>
+#include <string.h>
+#include <signal.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#include <sys/ioc_tty.h>
+#include <sys/times.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/select.h>
+
+#include <minix/ipc.h>
+#include <minix/config.h>
+#include <minix/type.h>
+#include <minix/const.h>
+
+#include "/usr/src/servers/is/inc.h"
+#include "/usr/src/servers/pm/mproc.h"
+#include "/usr/src/kernel/const.h"
+#include "/usr/src/kernel/proc.h"
+
+#include "../../include/minix/syslib.h"
+
+#define  TC_BUFFER  1024        /* Size of termcap(3) buffer    */
+#define  TC_STRINGS  200        /* Enough room for cm,cl,so,se  */
+
 
 int get_free_memory(struct pm_mem_info *pmi)
 {
@@ -30,10 +58,8 @@ int get_free_memory(struct pm_mem_info *pmi)
 void get_table() {
   /*register struct proc *rp;*/
   static struct pm_mem_info pmi;
-  static struct proc *oldrp = proc;
+  /* static struct proc *oldrp = proc; */
   struct mproc *mp;
-
-  int r, n = 0;
 
   int i;
   int free_mem;
@@ -56,11 +82,11 @@ void get_table() {
   printf("\n ---PID--- \t ---inicio--- \t ---fim--- \n");
   /*for(rp = oldrp; rp < END_PROC_ADDR; rp++) {*/
   for(i = 0; i < NR_PROCS; i++) {
-    mp = mproc[i];
+    mp = &mproc[i];
     printf("%3d\t%4x\t%4x\n",
     mp->mp_pid,
     mp->mp_seg[T].mem_phys,
-    mp->mp_seg[S].mem_phys + mp->p_memmap[S].mem_len
+    mp->mp_seg[S].mem_phys + mp->mp_seg[S].mem_len
     );
   }
 
