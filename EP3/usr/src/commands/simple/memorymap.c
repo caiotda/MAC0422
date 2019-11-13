@@ -8,6 +8,7 @@
 #include "../../kernel/type.h"
 #include "../../kernel/proc.h"
 #include "../../kernel/ipc.h"
+#include "../../servers/pm/mproc.h"
 
 int get_free_memory(struct pm_mem_info *pmi)
 {
@@ -27,11 +28,14 @@ int get_free_memory(struct pm_mem_info *pmi)
 }
 
 void get_table() {
-  register struct proc *rp;
+  /*register struct proc *rp;*/
   static struct pm_mem_info pmi;
   static struct proc *oldrp = proc;
+  struct mproc *mp;
 
   int r, n = 0;
+
+  int i;
   int free_mem;
 
   if(getsysinfo(PM_PROC_NR, SI_MEM_ALLOC, &pmi) != OK) {                  
@@ -39,17 +43,24 @@ void get_table() {
     return; 
   } 
 
-  /* First obtain a fresh copy of the current process table. */
-  if ((r = sys_getproctab(proc)) != OK) {
+/*  if ((r = sys_getproctab(proc)) != OK) {
     report("IS","warning: couldn't get copy of process table", r);
     return;
   }
+*/
+  if(getsysinfo(PM_PROC_NR, SI_PROC_TAB, mproc) != OK) {
+    printf("Falha ao obter a lista de processos.\n");
+    return;
+  }
+
   printf("\n ---PID--- \t ---inicio--- \t ---fim--- \n");
-  for(rp = oldrp; rp < END_PROC_ADDR; rp++) {
+  /*for(rp = oldrp; rp < END_PROC_ADDR; rp++) {*/
+  for(i = 0; i < NR_PROCS; i++) {
+    mp = mproc[i];
     printf("%3d\t%4x\t%4x\n",
-    proc_nr(rp),
-    rp->p_memmap[T].mem_phys,
-    rp->p_memmap[S].mem_phys + rp->p_memmap[S].mem_len
+    mp->mp_pid,
+    mp->mp_seg[T].mem_phys,
+    mp->mp_seg[S].mem_phys + mp->p_memmap[S].mem_len
     );
   }
 
