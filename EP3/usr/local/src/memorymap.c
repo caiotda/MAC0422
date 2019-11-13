@@ -55,9 +55,8 @@ int get_free_memory(struct pm_mem_info *pmi)
 }
 
 void get_table() {
-  /*register struct proc *rp;*/
+
   static struct pm_mem_info pmi;
-  /* static struct proc *oldrp = proc; */
   struct mproc mp[NR_PROCS];
   struct mproc *mp_current;
 
@@ -69,22 +68,15 @@ void get_table() {
     return; 
   } 
 
-/*  if ((r = sys_getproctab(proc)) != OK) {
-    report("IS","warning: couldn't get copy of process table", r);
-    return;
-  }
-*/
   if(getsysinfo(PM_PROC_NR, SI_PROC_TAB, mp) != OK) {
     printf("Falha ao obter a lista de processos.\n");
     return;
   }
 
   printf("\nPID\tStart\tEnd\n");
-  /*for(rp = oldrp; rp < END_PROC_ADDR; rp++) {*/
   for(i = 0; i < NR_PROCS; i++) {
     mp_current = &mp[i];
     if(mp_current->mp_pid != 0 || i == 0){
-	    
       printf("%4d\t%4x\t%4x\n",
       mp_current->mp_pid,
       mp_current->mp_seg[T].mem_phys,
