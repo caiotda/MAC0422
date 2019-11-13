@@ -29,8 +29,18 @@
 /* ######################################################## */
 int do_memalloc()
 {
-  worst_fit = m_in.m1_i1;
-  return (OK);
+  uid_t effective_user_id;
+
+  effective_user_id = m_in.m1_i2;
+
+  if (effective_user_id != 0) {
+    printf("Voce nao tem privilegios root para executar essa chamada\n");
+    return 1;
+  }
+  else {
+    worst_fit = m_in.m1_i1;
+    return (OK);
+  }
 }
 /* ######################################################## */
 /*EP03*/
