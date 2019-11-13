@@ -78,7 +78,7 @@ phys_clicks clicks;		/* amount of memory requested */
 	    hp = hole_head;
         largest = hp;
         while(hp != NIL_HOLE && hp->h_base < swap_base){
-            if(hp->h_len > largest)
+            if(hp->h_len > largest->h_len)
                 largest = hp;
 
             prev_ptr = hp;

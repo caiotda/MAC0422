@@ -29,17 +29,8 @@
 /* ######################################################## */
 int do_memalloc()
 {
-    int caller_euid;
-
-    caller_euid = geteuid();
-
-    if (caller_euid == 0) {
-        worst_fit = m_in.m1_i1;
-        return (OK);
-    }
-    else {
-        return 1;
-    }
+  worst_fit = m_in.m1_i1;
+  return (OK);
 }
 /* ######################################################## */
 /*EP03*/
