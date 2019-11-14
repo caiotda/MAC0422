@@ -14,6 +14,8 @@
   * `local`
     * `src`
       * **memorymap.c**
+    * `Bin`
+      * **memorymap**
   * `src`
     * `include`
       * `minix`
@@ -26,18 +28,18 @@
         * **alloc.c**
         * **glo.h**
         * **misc.c**
-        * **proto.h**
+      * **proto.h**
         * **table.c**
-
+  
 * Esses foram os arquivos com modificações para este exercício programa, a imagem enviada contém mais modificações referentes às fases anteriores
 
 ## Modificações
 
 * **callnr.h**: definição da chamada de sistema MEMALLOC
 * **memorymap.c**: implementação do utilitário que imprime o mapa da memória conforme a segunda parte do enunciado
+* **memorymap**: binário obtido pela compilação do arquivo memorymap.c
 * **_memalloc.c**: relativo à implementação da chamada de sistema, que invoca o PM, passando por mensagem parâmetros como o tipo de alocação de memória a ser executado (**0** para first fit e **1** para worst fit) e o id do usuário que invocou tal chamada de sistema
 * **alloc.c**: apenas a função `alloc_mem` foi modificada. Agora, ela checa a variável global `worst_fit` para decidir entre executar esta política em caso que valha **1** ou a política de first fit quando `worst_fit` vale **0**
-
 * **glo.h**: declaração da variável global `worst_fit`
 * **misc.c**: criação da função `do_memalloc` que implementa a respectiva chamada de sistema para mudança da política de alocação de memória (apenas se o root foi quem chamou)
 * **proto.h**: declaração do protótipo de `do_memalloc`
